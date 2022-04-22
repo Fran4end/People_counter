@@ -1,4 +1,5 @@
 import math
+import time
 import cv2
 import numpy as np
 import cvlib as cv
@@ -6,7 +7,22 @@ import matplotlib.pyplot as plt
 from cvlib.object_detection import draw_bbox
 thres = 0.45
 
-img = cv2.imread('Noi_ma_piu_in_grande.jpg')
+cam_port = 1 #inizialize the cam
+
+def take_photo():
+    cam = cv2.VideoCapture(cam_port) #capture the video
+    result, image = cam.read() #read the input
+    if result: #if the result was positivefor x in range(0, len(hsv)):
+            #image = increase_brightness(image)
+        cv2.imwrite("img0.jpg", image)
+    else:
+        print("failed")
+        
+    time.sleep(2)
+    cam.release()
+
+take_photo()
+img = cv2.imread('img0.jpg')
 classNames= []
 classFile = 'coco.names'
 with open(classFile,'rt') as f:
@@ -30,9 +46,9 @@ for classId, confidence,box in zip(classIds.flatten(), confs.flatten(), bbox):
     if(classNames[classId-1] == 'person'):
         Nperson += 1
         #### disegna il rettangolo con il nome dell'oggeto ###
-        cv2.rectangle(img,box,color=(0,255,0),thickness=2)
-        cv2.putText(img,classNames[classId-1],(box[0]+10,box[1]+30),
-        cv2.FONT_HERSHEY_COMPLEX,1,(0,255,0),1)
+        #cv2.rectangle(img,box,color=(0,255,0),thickness=2)
+        #cv2.putText(img,classNames[classId-1],(box[0]+10,box[1]+30),
+        #cv2.FONT_HERSHEY_COMPLEX,1,(0,255,0),1)
 
 persone = 0
 for obj in label:
